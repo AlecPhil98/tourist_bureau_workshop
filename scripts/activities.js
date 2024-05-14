@@ -103,7 +103,7 @@ let activities = [
 
 window.onload = function () {
     initDropDownCatagory();
- 
+
 
     let actCatagories = document.querySelector("#actCatagories");
     actCatagories.addEventListener("change", initDropDownAct)
@@ -148,7 +148,7 @@ function initDropDownAct() {
     let dropDown = document.querySelector("#actSelect");
 
     // clears the activity drop down when selecting a new option
-    dropDown.length= 0;
+    dropDown.length = 0;
 
 
     let defaultOptions = document.createElement("option");
@@ -161,8 +161,8 @@ function initDropDownAct() {
 
     let actCatagories = document.querySelector("#actCatagories").value
 
-    //Example usage
-let matches = getActivitiesInCategory(activities, actCatagories); 
+    // gets the funtion that filters the activity and catatgories 
+    let matches = getActivitiesInCategory(activities, actCatagories);
 
     let numActivities = matches.length;
 
@@ -190,13 +190,25 @@ function displayActivities(event) {
     let resultsParagraph = document.querySelector("#results");
 
     let selectedIndex = dropDown.selectedIndex - 1;
+    
+    let newMatch=[]
+
+    let newDropDown = document.querySelector("#actCatagories")
+    for (let i = 0; i < activities.length; i++) {
+        if (newDropDown.value === activities[i].category) {
+            newMatch.push(activities[i])
+
+
+        }
+
+    }
 
     if (dropDown.value === "") {
 
         resultsParagraph.innerHTML = "";
 
     } else {
-        let selectedAct = activities[selectedIndex]
+        let selectedAct = newMatch[selectedIndex]
         resultsParagraph.innerHTML = `
         <div> Category: ${selectedAct.category} </div>
         <div> ID: ${selectedAct.id} </div>
