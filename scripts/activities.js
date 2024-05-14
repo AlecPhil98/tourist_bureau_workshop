@@ -103,10 +103,10 @@ let activities = [
 
 window.onload = function () {
     initDropDownCatagory();
-    initDropDownAct();
+ 
 
     let actCatagories = document.querySelector("#actCatagories");
-    actCatagories = addEventListener("click", getActivitiesInCategory)
+    actCatagories.addEventListener("change", initDropDownAct)
 
     let actSelect = document.querySelector("#actSelect");
     actSelect.addEventListener("click", displayActivities);
@@ -147,6 +147,10 @@ function initDropDownAct() {
 
     let dropDown = document.querySelector("#actSelect");
 
+    // clears the activity drop down when selecting a new option
+    dropDown.length= 0;
+
+
     let defaultOptions = document.createElement("option");
 
     defaultOptions.textContent = "Select a activities"
@@ -155,17 +159,20 @@ function initDropDownAct() {
 
     dropDown.appendChild(defaultOptions);
 
+    let actCatagories = document.querySelector("#actCatagories").value
 
+    //Example usage
+let matches = getActivitiesInCategory(activities, actCatagories); 
 
-    let numActivities = activities.length;
+    let numActivities = matches.length;
 
     for (let i = 0; i < numActivities; i++) {
 
         let newAct = document.createElement("option")
 
-        newAct.textContent = activities[i].name;
+        newAct.textContent = matches[i].name;
 
-        newAct.value = activities[i].id;
+        newAct.value = matches[i].id;
 
         dropDown.appendChild(newAct)
 
@@ -190,7 +197,13 @@ function displayActivities(event) {
 
     } else {
         let selectedAct = activities[selectedIndex]
-        resultsParagraph.innerHTML = ` You have selected ${selectedAct.name} ${selectedAct.id} ${selectedAct.description} this activity is loacted at ${selectedAct.location}for the price of $${selectedAct.price}.`
+        resultsParagraph.innerHTML = `
+        <div> Category: ${selectedAct.category} </div>
+        <div> ID: ${selectedAct.id} </div>
+        <div> Name: ${selectedAct.name} </div>
+        <div> Description: ${selectedAct.description} </div>
+        <div> Location: ${selectedAct.location} </div>
+        <div> Price: ${selectedAct.price.toFixed(2)} </div> `
     }
 
 
