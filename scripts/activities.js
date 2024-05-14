@@ -102,51 +102,60 @@ let activities = [
 ];
 
 window.onload = function () {
+    initDropDownCatagory();
+    initDropDownAct();
 
-    initDropDown();
+    let actCatagories = document.querySelector("#actCatagories");
+    actCatagories = addEventListener("click", getActivitiesInCategory)
 
-    let formSubmit = document.querySelector("#actForm");
-
-    formSubmit.addEventListener("submit", displayActivities);
+    let actSelect = document.querySelector("#actSelect");
+    actSelect.addEventListener("click", displayActivities);
 
 
 }
 
-function displayActivities(event) {
+function initDropDownCatagory() {
+
+    let categoriesDropDown = document.querySelector("#actCatagories")
+
+    let defaultOptions = document.createElement("option");
+
+    defaultOptions.textContent = "Select a catagory"
+
+    defaultOptions.value = "";
+
+    categoriesDropDown.appendChild(defaultOptions);
+
+    let numCatagories = categories.length
+
+    for (let i = 0; i < numCatagories; i++) {
+
+        let newCatagory = document.createElement("option")
+
+        newCatagory.textContent = categories[i]
+
+        newCatagory.value = categories[i]
 
 
-    event.preventDefault();
+        categoriesDropDown.appendChild(newCatagory)
 
-    let dropDown = document.querySelector("#actSelect")
-
-    let resultsParagraph = document.querySelector("#results");
-
-    let selectedIndex = dropDown.selectedIndex - 1;
-
-    if (dropDown.value === "") {
-
-        resultsParagraph.innerHTML = "";
-
-    } else {
-        let selectedAct = activities[selectedIndex]
-        resultsParagraph.innerHTML = ` You have selected ${selectedAct.name} this activity is loacted at ${selectedAct.location}`
     }
 
 
-
 }
-
-function initDropDown() {
+function initDropDownAct() {
 
     let dropDown = document.querySelector("#actSelect");
 
     let defaultOptions = document.createElement("option");
 
-    defaultOptions.textContent = "Select an Activity"
+    defaultOptions.textContent = "Select a activities"
 
     defaultOptions.value = "";
 
     dropDown.appendChild(defaultOptions);
+
+
 
     let numActivities = activities.length;
 
@@ -164,3 +173,52 @@ function initDropDown() {
     }
 
 }
+function displayActivities(event) {
+
+
+    event.preventDefault();
+
+    let dropDown = document.querySelector("#actSelect")
+
+    let resultsParagraph = document.querySelector("#results");
+
+    let selectedIndex = dropDown.selectedIndex - 1;
+
+    if (dropDown.value === "") {
+
+        resultsParagraph.innerHTML = "";
+
+    } else {
+        let selectedAct = activities[selectedIndex]
+        resultsParagraph.innerHTML = ` You have selected ${selectedAct.name} ${selectedAct.id} ${selectedAct.description} this activity is loacted at ${selectedAct.location}for the price of $${selectedAct.price}.`
+    }
+
+
+
+}
+
+
+//This function will return a a list of the matching activities for a given category
+//Just pass it the array of activities and the category you are looking for
+function getActivitiesInCategory(activities, category) {
+
+    //start by creating an empty list to hold our matches
+    let matching = [];
+    //number of items on the menu
+    let numItems = activities.length;
+
+    //loop over the activities to find matches
+    for (let i = 0; i < numItems; i++) {
+        if (activities[i].category === category) {
+            //add that activity to our matches array
+            matching.push(activities[i]);
+        }
+    }
+
+    //return all the matching menu items
+    return matching;
+}
+
+
+// //Example usage
+// let matches = getActivitiesInCategory(activities, "Adventures"); 
